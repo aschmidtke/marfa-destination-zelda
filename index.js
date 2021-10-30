@@ -27,7 +27,7 @@ function employeeTracker() {
             case "View Roles":
                 viewRoles();
                 break;
-            
+
             case "View Employees":
                 viewEmployees();
                 break;
@@ -35,19 +35,19 @@ function employeeTracker() {
             case "Add Department":
                 addDepartment();
                 break;
-            
-            case "Add Roles":
+
+            case "Add Role":
                 addRole();
                 break;
-            
+
             case "Add Employee":
                 addEmployee();
                 break;
-            
+
             case "Edit Employee":
                 editEmployee();
                 break;
-            
+
             case "Exit":
                 db.end();
                 break;
@@ -78,7 +78,7 @@ const viewRoles = () => {
 }
 
 const viewEmployees = () => {
-    const sql = `SELECT * FROM employees`; // check formatting with assingment
+    const sql = `SELECT * FROM employees`;
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
@@ -100,6 +100,71 @@ const addDepartment = () => {
             if (err) return err;
             console.log('\n');
             console.log('Department added');
+            console.log('----------');
+            employeeTracker();
+        });
+    });
+}
+
+const addRole = () => {
+    inquirer.prompt([
+        {
+            name: 'newRole',
+            type: 'input',
+            message: 'What type of role would you like to add?'
+        },
+        {
+            name: 'newSalary',
+            type: 'input',
+            message: 'What is the salary for this role?'
+        },
+        {
+            name: 'newRoleDept',
+            type: 'input',
+            message: 'What department would you like to add this role to?'
+        }
+    ]).then((answer) => {
+        const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
+        const params = [answer.newRole, answer.newSalary, answer.newRoleDept]; 
+        db.query(sql, params, (err, results) => {
+            if (err) return err;
+            console.log('\n');
+            console.log('Role added');
+            console.log('----------');
+            employeeTracker();
+        });
+    });
+}
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            name: 'newFirstName',
+            type: 'input',
+            message: "What is the new employee's first name?"
+        },
+        {
+            name: 'newLastName',
+            type: 'input',
+            message: "What is the new employee's last name?"
+        },
+        {
+            name: 'newEmpRole',
+            type: 'input',
+            message: "What is the new employee's role?"
+        },
+        {
+            name: 'newEmpManager',
+            type: 'input',
+            message: "Who is the new employee's manager?"
+        }
+    ]).then((answer) => {
+        const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`
+        const params = [answer.newFirstName, answer.newLastName, answer.newEmpRole, answer.newEmpManager]
+        db.query(sql, params, (err, results) => {
+            if (err) throw (err);
+            console.log('\n');
+            console.log('New employee added!');
             console.log('----------');
             employeeTracker();
         });
