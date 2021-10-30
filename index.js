@@ -155,12 +155,13 @@ const addEmployee = () => {
         },
         {
             name: 'newEmpManager',
-            type: 'input',
-            message: "Who is the new employee's manager?"
+            type: 'list',
+            message: "Who is the new employee's manager?",
+            choices: ['1 Kathy Martin', '2 Ronny Lora']
         }
     ]).then((answer) => {
         const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`
-        const params = [answer.newFirstName, answer.newLastName, answer.newEmpRole, answer.newEmpManager]
+        const params = [answer.newFirstName, answer.newLastName, answer.newEmpRole, answer.newEmpManager.slice(0,2)]
         db.query(sql, params, (err, results) => {
             if (err) throw (err);
             console.log('\n');
