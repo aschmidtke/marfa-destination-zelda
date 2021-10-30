@@ -2,7 +2,7 @@ const db = require('./db/connection');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 
-// start database connetion and main
+// start database connetion and main function
 db.connect(err => {
     if (err) throw err;
     console.log('Database connected. Welcome to Employee Tracker!');
@@ -56,7 +56,7 @@ function employeeTracker() {
 };
 
 const viewDepartments = () => {
-    const sql = `SELECT * FROM departments`;
+    const sql = `SELECT * FROM departments`; // check formatting with assingment
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
@@ -67,7 +67,7 @@ const viewDepartments = () => {
 }
 
 const viewRoles = () => {
-    const sql = `SELECT * FROM roles`;
+    const sql = `SELECT * FROM roles`; // check formatting with assingment
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
@@ -78,7 +78,7 @@ const viewRoles = () => {
 }
 
 const viewEmployees = () => {
-    const sql = `SELECT * FROM employees`;
+    const sql = `SELECT * FROM employees`; // check formatting with assingment
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
