@@ -56,7 +56,7 @@ function employeeTracker() {
 };
 
 const viewDepartments = () => {
-    const sql = `SELECT * FROM departments`; // check formatting with assingment
+    const sql = `SELECT * FROM departments`;
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
@@ -67,7 +67,7 @@ const viewDepartments = () => {
 }
 
 const viewRoles = () => {
-    const sql = `SELECT * FROM roles`; // check formatting with assingment
+    const sql = `SELECT * FROM roles`; // check formatting with assingment table needs job titles and departments
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
@@ -86,4 +86,22 @@ const viewEmployees = () => {
     });
     console.log('----------');
     employeeTracker();
+}
+
+const addDepartment = () => {
+    inquirer.prompt(
+        {
+            name: 'newDepartment',
+            type: 'input',
+            message: 'What department would you like to add?'
+        }
+    ).then((answer) => {
+        db.query(`INSERT INTO departments (name) VALUES ('${answer.newDepartment}');`, (err, res) => {
+            if (err) return err;
+            console.log('\n');
+            console.log('Department added');
+            console.log('----------');
+            employeeTracker();
+        });
+    });
 }
