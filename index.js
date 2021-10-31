@@ -67,7 +67,9 @@ const viewDepartments = () => {
 }
 
 const viewRoles = () => {
-    const sql = `SELECT * FROM roles`; // check formatting with assingment table needs job titles and departments
+    const sql = `SELECT roles.*, departments.name AS department_name
+    FROM roles
+    LEFT JOIN departments ON roles.department_id = departments.id`
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.log('\n');
