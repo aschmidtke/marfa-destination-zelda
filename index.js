@@ -96,7 +96,9 @@ const addDepartment = () => {
             message: 'What department would you like to add?'
         }
     ).then((answer) => {
-        db.query(`INSERT INTO departments (name) VALUES ('${answer.newDepartment}');`, (err, res) => {
+        const sql = `INSERT INTO departments (name) VALUES (?)`
+        const params = answer.newDepartment
+        db.query(sql, params, (err, res) => {
             if (err) return err;
             console.log('\n');
             console.log('Department added');
