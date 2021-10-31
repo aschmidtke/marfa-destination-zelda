@@ -55,6 +55,7 @@ function employeeTracker() {
     })
 };
 
+// view departments function
 const viewDepartments = () => {
     const sql = `SELECT * FROM departments`;
     db.query(sql, (err, results) => {
@@ -66,6 +67,7 @@ const viewDepartments = () => {
     employeeTracker();
 }
 
+// view roles function
 const viewRoles = () => {
     const sql = `SELECT roles.*, departments.name AS department_name
     FROM roles
@@ -79,6 +81,7 @@ const viewRoles = () => {
     employeeTracker();
 }
 
+// view employees function
 const viewEmployees = () => {
     const sql = `SELECT * FROM employees`;
     db.query(sql, (err, results) => {
@@ -90,6 +93,7 @@ const viewEmployees = () => {
     employeeTracker();
 }
 
+// add department function
 const addDepartment = () => {
     inquirer.prompt(
         {
@@ -110,6 +114,7 @@ const addDepartment = () => {
     });
 }
 
+// add role function
 const addRole = () => {
     inquirer.prompt([
         {
@@ -124,12 +129,13 @@ const addRole = () => {
         },
         {
             name: 'newRoleDept',
-            type: 'input',
-            message: 'What department would you like to add this role to?'
+            type: 'list',
+            message: 'What department would you like to add this role to?',
+            choices: ['1 Manager', '2 Front of House', '3 Back of House']
         }
     ]).then((answer) => {
         const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
-        const params = [answer.newRole, answer.newSalary, answer.newRoleDept]; 
+        const params = [answer.newRole, answer.newSalary, answer.newRoleDept.slice(0,2)]; 
         db.query(sql, params, (err, results) => {
             if (err) return err;
             console.log('\n');
@@ -140,6 +146,7 @@ const addRole = () => {
     });
 }
 
+// add employee function
 const addEmployee = () => {
     inquirer.prompt([
         {
@@ -176,6 +183,7 @@ const addEmployee = () => {
     });
 }
 
+// edit employee function
 const editEmployee = () => {
   const sql = `SELECT * FROM employees`;
   db.query(sql, (err, data) => {
