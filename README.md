@@ -15,5 +15,5 @@
 - JavaScript
 - Node.js, MySql, Inquirer NPM, ConsoleTable NPM
 
-Repository link:
-Video link:
+Repository link: https://github.com/aschmidtke/marfa-destination-zelda.git
+Video link: https://drive.google.com/file/d/1Apto8QLQvhIhHsocaQQfsMrdTOjpCqsb/view
