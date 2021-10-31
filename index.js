@@ -157,7 +157,7 @@ const addEmployee = () => {
             name: 'newEmpManager',
             type: 'list',
             message: "Who is the new employee's manager?",
-            choices: ['1 Kathy Martin', '2 Ronny Lora']
+            choices: ['1 Kathy Martin', '2 Ronny Lora'] // possible to display managers as an array but return a number?
         }
     ]).then((answer) => {
         const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?);`
@@ -170,4 +170,52 @@ const addEmployee = () => {
             employeeTracker();
         });
     });
+}
+
+const editEmployee = () => {
+  const sql = `SELECT * FROM employees`;
+  db.query(sql, (err, data) => {
+      if (err) throw err;
+      const employeeList = data.map(({ id, first_name, last_name }) => ({ name: first_name + ' ' + last_name, value: id}));
+      
+      inquirer.prompt([
+          {
+            name: "empName",
+            type: "list",
+            message: "Which employee file would you like to update?",
+            choices: employeeList
+          }
+      ]).then((answer) => {
+          const employee = answer.name;
+          const params = [];
+          params.push(employee);
+
+          const sql = `SELECT * FROM roles`;
+          db.query(sql, (err, data) => {
+              if (err) throw err;
+              const roleList = data.map(({ id, title }) => ({ name: title, value: id }));
+              
+              inquirer.prompt([
+                  {
+                      name: 'roleName',
+                      type: "list",
+                      message: "What is the employee's new role?",
+                      choices: roleList
+                  }
+              ]).then((answer) => {
+                  const newRole = answer.roleList;
+                  params.push(newRole);
+
+                  const sql = `UPDATE employees SET role_id = ? WHERE id = ?`;
+                  db.query(sql, params, (err, result) => {
+                      if (err) throw err;
+                      console.log('\n');
+                        console.log('Employee updated!');
+                        console.log('----------');
+                        employeeTracker();
+                  })
+              })
+          })
+      })
+  })
 }
